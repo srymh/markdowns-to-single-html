@@ -2,6 +2,7 @@ import MarkdownIt from 'markdown-it';
 import Renderer from 'markdown-it/lib/renderer';
 import Token from 'markdown-it/lib/token';
 import {readFileSync} from 'fs';
+import path from 'path';
 
 type MimeType = {
   ext: string;
@@ -9,6 +10,7 @@ type MimeType = {
 };
 
 type ReplaceAssetsToBase64Options = {
+  markdownFilePath?: string;
   mimeTypes: MimeType[];
 };
 
@@ -28,13 +30,13 @@ function getMimeType(src: string, mimeTypes: MimeType[]) {
 
 function makeAssetsToBase64Fn(opts: ReplaceAssetsToBase64Options) {
   // type RenderRule = (tokens: Token[], idx: number, options: MarkdownIt.Options, env: any, self: Renderer) => string;
-  return function assetsToBase64(
+  return (
     tokens: Token[],
     idx: number,
     options: MarkdownIt.Options,
     env: any,
     self: Renderer
-  ) {
+  ) => {
     const token = tokens[idx];
     if (token.attrs && token.children) {
       // https://github.com/markdown-it/markdown-it/blob/df4607f1d4d4be7fdc32e71c04109aea8cc373fa/lib/renderer.js#L93
@@ -48,12 +50,18 @@ function makeAssetsToBase64Fn(opts: ReplaceAssetsToBase64Options) {
 
       try {
         const src = token.attrs[token.attrIndex('src')][1];
-        const base64 = readFileSync(src, 'base64');
+        let assetFilePath = src;
+        if (opts.markdownFilePath) {
+          assetFilePath = path.join(path.dirname(opts.markdownFilePath), src);
+        }
+        const base64 = readFileSync(assetFilePath, 'base64');
+
         const mime = getMimeType(src, opts.mimeTypes);
         html = html.replace(/src=".*?"/, `src="data:${mime};base64,${base64}"`);
         return html;
       } catch (error) {
-        throw new Error('Rendering Error: assetsToBase64');
+        console.error('Rendering Error: assetsToBase64' + error.message);
+        return html;
       }
     } else {
       throw new Error('Rendering Error: assetsToBase64');
@@ -66,6 +74,7 @@ export function replaceAssetsToBase64(
   options: ReplaceAssetsToBase64Options
 ) {
   const defaultOptions: ReplaceAssetsToBase64Options = {
+    markdownFilePath: '',
     mimeTypes: [],
   };
   const opts: ReplaceAssetsToBase64Options = md.utils.assign(
