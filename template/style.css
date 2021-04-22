@@ -1,0 +1,61 @@
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  color: white;
+  background-color: rgb(45, 119, 119);
+  padding: 8px;
+  margin: 5px 0px;
+}
+
+h2 {
+  border-bottom: 3px solid rgb(45, 119, 119);
+}
+
+h3 {
+  border-left: 3px solid rgb(45, 119, 119);
+  padding-left: 3px;
+}
+
+/* 記事 */
+main {
+  margin-left: 200px;
+  margin-bottom: 90vh;
+}
+
+/* ページ切り替え */
+.page-owner > .page {
+  display: none;
+}
+
+.page-owner > .page.show {
+  display: initial;
+}
+
+/* 目次 */
+header.index {
+  position: fixed;
+  height: 100%;
+  width: 200px;
+  top: 0;
+  left: 0;
+  background-color: rgb(45, 119, 119);
+  padding: 5px 5px;
+}
+
+header.index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header.index li {
+  margin: 0;
+  padding: 0;
+}
+
+header.index a {
+  color: white;
+  text-decoration: none;
+}

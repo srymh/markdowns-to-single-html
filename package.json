@@ -1,11 +1,12 @@
 {
   "name": "markdowns-to-single-html",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "srymh",
   "files": [
     "/dist-cjs",
-    "/dist-esm"
+    "/dist-esm",
+    "/template"
   ],
   "keywords": [],
   "license": "MIT",
