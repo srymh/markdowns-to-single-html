@@ -18,7 +18,7 @@ var Searcher = (function () {
 
     if (text.length === 0) return elements;
 
-    var expression = makeXPathExprSearchDeepestNodeContaining(text);
+    var expression = this._makeXPathExprSearchDeepestNodeContaining(text);
 
     var xPathResult = document.evaluate(
       expression,
@@ -71,7 +71,7 @@ var Searcher = (function () {
 
         element.style.border = '5px solid red';
         var regexEscaped = text; // ToDo: . や * などの正規表現の特殊文字をエスケープしなければならない。
-        var htmlEscaped = text; // ToDo: <> やらなんやらをエスケープしなければならない。
+        var htmlEscaped = this._escapeHtml(text);
         element.innerHTML = element.innerHTML.replace(
           new RegExp(regexEscaped, 'g'),
           `<span style="background-color: yellow; color: black;">${htmlEscaped}</span>`
@@ -105,22 +105,25 @@ var Searcher = (function () {
    * ipsum も検索できるように下記リンク先を参考に改善した。
    * https://stackoverflow.com/questions/53906387/select-all-deepest-nodes-with-xpath-1-0-containing-text-ignoring-markup
    *
-   * 完全一致: '//*[normalize-space()="ipsum" and not(./*[normalize-space()="ipsum"])]'
+   * 完全一致: '//*[normalize-spaace()="ipsum" and not(./*[normalize-space()="ipsum"])]'
    * 部分一致: '//*[contains(normalize-space(), "ipsum") and not(./*[contains(normalize-space(), "ipsum")])]'
    *
+   * @param {string} text
    */
-  function makeXPathExprSearchDeepestNodeContaining(text) {
+  Searcher.prototype._makeXPathExprSearchDeepestNodeContaining = function (
+    text
+  ) {
     var target = '*';
     return (
       '//' +
       target +
       '[contains(normalize-space(), ' +
-      escapeXPathExpr(text) +
+      this._escapeXPathExpr(text) +
       ') and not(./*[contains(normalize-space(), ' +
-      escapeXPathExpr(text) +
+      this._escapeXPathExpr(text) +
       ')])]'
     );
-  }
+  };
 
   /**
    * XPathのエスケープ処理
@@ -134,7 +137,7 @@ var Searcher = (function () {
    * @param {string} text XPath文字列
    * @returns string エスケープされたXPath文字列
    */
-  function escapeXPathExpr(text) {
+  Searcher.prototype._escapeXPathExpr = function (text) {
     var matches = text.match(/[^"]+|"/g);
 
     function esc(t) {
@@ -154,7 +157,25 @@ var Searcher = (function () {
     } else {
       return '""';
     }
-  }
+  };
+
+  /**
+   * https://qiita.com/saekis/items/c2b41cd8940923863791
+   *
+   * @param {*} text
+   */
+  Searcher.prototype._escapeHtml = function (text) {
+    return text.replace(/[&'`"<>]/g, function (match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+      }[match];
+    });
+  };
 
   return Searcher;
 })();

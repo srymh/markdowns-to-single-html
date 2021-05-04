@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script>
+      mocha.setup('bdd');
+    </script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+      var assert = chai.assert;
+    </script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div>
+        <h1>H1</h1>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima magni
+        nisi fugit optio, nam qui vitae adipisci ullam rerum aut libero dolorum,
+        exercitationem pariatur ipsam consequuntur maiores, aliquid in
+        assumenda.
+      </div>
+      <div>
+        <p>abc</p>
+        def
+      </div>
+      <div>シングルクォーテーション「'」</div>
+      <div>ダブルクォーテーション「"」</div>
+      <div>シングル & ダブルクォーテーション「'"」</div>
+      <div>文字実体参照: &lt;</div>
+      <div class="page-owner">
+        <div class="page show" id="page1">page1</div>
+        <div class="page" id="page2">page2</div>
+      </div>
+    </div>
+    <hr />
+    <div id="mocha"></div>
+    <script src="../template/paging.js"></script>
+    <script src="../template/search.js"></script>
+    <script src="../template/main.js"></script>
+    <script src="./main.test.js"></script>
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>
