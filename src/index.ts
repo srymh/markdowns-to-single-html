@@ -85,7 +85,7 @@ const defaultOptions = {
     path.dirname(__filename),
     path.join('..', 'template')
   ),
-  javascriptFileNames: ['paging.js', 'main.js'],
+  javascriptFileNames: ['paging.js', 'search.js', 'main.js'],
   cssTemplateFolderPath: path.resolve(
     path.dirname(__filename),
     path.join('..', 'template')

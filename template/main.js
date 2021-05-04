@@ -1,3 +1,4 @@
-(function (paging) {
+(function (paging, Searcher) {
   window.addEventListener('hashchange', paging);
-})(paging);
+  window.searcher = new Searcher();
+})(paging, Searcher);
