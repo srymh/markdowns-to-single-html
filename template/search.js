@@ -1,6 +1,7 @@
 var Searcher = (function () {
   function Searcher() {
     this.result = [];
+    // ToDo: ホワイトリストの方がいい。
     this.tagsToBeExcluded = [
       'script',
       'style',
@@ -15,33 +16,9 @@ var Searcher = (function () {
     /** @type {HTMLElement[]} */
     var elements = [];
 
-    /*
-     * var expression =
-     *   '//*[contains(text(), ' + escapeXPathExpr(text) + ')]';
-     * テキストが部分一致している要素を取得する。
-     * ただし、以下のような例の ipsum を検索し取得することができない。
-     *
-     * <div>
-     *   <p>lorem</p>
-     *   ipsum
-     * </div>
-     *
-     * text() を . に置き換えると、 ipsum が検索できるが、親ノードまですべて取得してしまう。
-     * var expression = '//*[contains(., ' + escapeXPathExpr(text) + ')]';
-     *
-     * ipsum も検索できるように下記リンク先を参考に改善した。
-     * https://stackoverflow.com/questions/53906387/select-all-deepest-nodes-with-xpath-1-0-containing-text-ignoring-markup
-     *
-     * 完全一致: '//*[normalize-space()="ipsum" and not(./*[normalize-space()="ipsum"])]'
-     * 部分一致: '//*[contains(normalize-space(), "ipsum") and not(./*[contains(normalize-space(), "ipsum")])]'
-     *
-     */
-    var expression =
-      '//*[contains(normalize-space(), ' +
-      escapeXPathExpr(text) +
-      ') and not(./*[contains(normalize-space(), ' +
-      escapeXPathExpr(text) +
-      ')])]';
+    if (text.length === 0) return elements;
+
+    var expression = makeXPathExprSearchDeepestNodeContaining(text);
 
     var xPathResult = document.evaluate(
       expression,
@@ -112,8 +89,50 @@ var Searcher = (function () {
   };
 
   /**
+   * var expression =
+   *   '//*[contains(text(), ' + escapeXPathExpr(text) + ')]';
+   * テキストが部分一致している要素を取得する。
+   * ただし、以下のような例の ipsum を検索し取得することができない。
+   *
+   * <div>
+   *   <p>lorem</p>
+   *   ipsum
+   * </div>
+   *
+   * text() を . に置き換えると、 ipsum が検索できるが、親ノードまですべて取得してしまう。
+   * var expression = '//*[contains(., ' + escapeXPathExpr(text) + ')]';
+   *
+   * ipsum も検索できるように下記リンク先を参考に改善した。
+   * https://stackoverflow.com/questions/53906387/select-all-deepest-nodes-with-xpath-1-0-containing-text-ignoring-markup
+   *
+   * 完全一致: '//*[normalize-space()="ipsum" and not(./*[normalize-space()="ipsum"])]'
+   * 部分一致: '//*[contains(normalize-space(), "ipsum") and not(./*[contains(normalize-space(), "ipsum")])]'
+   *
+   */
+  function makeXPathExprSearchDeepestNodeContaining(text) {
+    var target = '*';
+    return (
+      '//' +
+      target +
+      '[contains(normalize-space(), ' +
+      escapeXPathExpr(text) +
+      ') and not(./*[contains(normalize-space(), ' +
+      escapeXPathExpr(text) +
+      ')])]'
+    );
+  }
+
+  /**
+   * XPathのエスケープ処理
+   *
+   * バージョン2より前のXPathはエスケープに対応していない。かつ、多くのブラウザはバージョン2のXPathに対応していない。
+   * 必然的にブラウザでXPathを利用する際には自前でエスケープ処理を行う必要がある。
+   *
    * https://amachang.hatenablog.com/entry/20090917/1253179486
-   * @param {*} text
+   * XPath に文字列を埋め込むときの注意 - IT戦記 amachang (id:amachang)
+   *
+   * @param {string} text XPath文字列
+   * @returns string エスケープされたXPath文字列
    */
   function escapeXPathExpr(text) {
     var matches = text.match(/[^"]+|"/g);

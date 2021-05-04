@@ -1,75 +1,10 @@
-import MarkdownIt from 'markdown-it';
-import mdAnchor, {AnchorInfo} from 'markdown-it-anchor';
-import {replaceAssetsToBase64} from './modules/replaceAssetsToBase64';
+import {render} from './modules/render';
+import {makeHtmlPage} from './modules/makeHtmlPage';
+import {makeHtmlMain} from './modules/makeHtmlMain';
+import {makeHtmlHeaderItem} from './modules/makeHtmlHeaderItem';
+import {makeHtmlHeader} from './modules/makeHtmlHeader';
 import {readFileSync} from 'fs';
 import path from 'path';
-
-type RenderOptions = {
-  markdownFilePath?: string;
-  pageId?: string;
-};
-
-export const render = (markdown: string, options?: RenderOptions) => {
-  const defaultOptions: RenderOptions = {
-    markdownFilePath: undefined,
-    pageId: undefined,
-  };
-  const opts = {...defaultOptions, ...options};
-  const {markdownFilePath, pageId} = opts;
-
-  const anchors: AnchorInfo[] = [];
-  const md = new MarkdownIt();
-  md.use(mdAnchor, {
-    slugify: (str) => {
-      return (
-        pageId +
-        '.' +
-        encodeURIComponent(
-          String(str).trim().toLowerCase().replace(/\s+/g, '-')
-        )
-      );
-    },
-    callback: (_token, anchor_info) => {
-      anchors.push(anchor_info);
-    },
-  }).use(replaceAssetsToBase64, {
-    markdownFilePath,
-    mimeTypes: [
-      {
-        ext: '.png',
-        mime: 'image/png',
-      },
-      {
-        ext: '.svg',
-        mime: 'image/svg+xml',
-      },
-    ],
-  });
-  return {
-    html: md.render(markdown),
-    anchors: [...anchors],
-  };
-};
-
-export const makeHtmlPage = (html: string, pageId: string, top: boolean) => {
-  const show = top ? ' show' : '';
-  return `<section class="page${show}" id="${pageId}">${html}</section>`;
-};
-
-export const makeHtmlMain = (htmls: string[]) =>
-  `<main class="page-owner">${htmls.join('')}</main>`;
-
-export const makeHtmlHeaderItem = (anchors: AnchorInfo[], pageId: string) => {
-  let html = `<div><ul><li><a href="#${pageId}">${pageId}</a></li>`;
-  for (const anchor of anchors) {
-    html += `<li><a href="#${anchor.slug}">${anchor.title}</a></li>`;
-  }
-  html += `</ul></div>`;
-  return html;
-};
-
-export const makeHtmlHeader = (htmls: string[]) =>
-  `<header class="index">${htmls.join('')}</header>`;
 
 export type MarkdownsToSingleHtmlOptions = {
   title?: string;
