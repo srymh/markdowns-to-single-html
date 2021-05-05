@@ -1,7 +1,7 @@
 {
   "name": "markdowns-to-single-html",
   "description": "",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "srymh",
   "files": [
     "/dist-cjs",
