@@ -5,7 +5,10 @@ import {makeHtmlHeader} from './makeHtmlHeader';
 
 describe('makeHtmlHeader', () => {
   test('sample.md and sample2.md', () => {
-    const markdownFilePaths = ['./test/sample.md', './test/sample2.md'];
+    const markdownFilePaths = [
+      './test/markdowns/sample.md',
+      './test/markdowns/sample2.md',
+    ];
     const markdowns = markdownFilePaths.map((filePath) =>
       readFileSync(filePath, 'utf8')
     );

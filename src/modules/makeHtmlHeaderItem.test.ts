@@ -5,7 +5,7 @@ import {makeHtmlHeaderItem} from './makeHtmlHeaderItem';
 
 describe('makeHtmlHeaderItem', () => {
   test('sample.md', () => {
-    const markdownFilePath = './test/sample.md';
+    const markdownFilePath = './test/markdowns/sample.md';
     const markdown = readFileSync(markdownFilePath, 'utf8');
     const pageId = 'page' + 1;
     const anchors = render(markdown, {markdownFilePath, pageId}).anchors;
@@ -25,7 +25,7 @@ describe('makeHtmlHeaderItem', () => {
   });
 
   test('日本語ヘッダー', () => {
-    const markdownFilePath = './test/headers.md';
+    const markdownFilePath = './test/markdowns/headers.md';
     const markdown = readFileSync(markdownFilePath, 'utf8');
     const pageId = 'page' + 1;
     const anchors = render(markdown, {markdownFilePath, pageId}).anchors;

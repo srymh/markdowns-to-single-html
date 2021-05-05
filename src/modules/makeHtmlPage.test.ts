@@ -4,7 +4,7 @@ import {makeHtmlPage} from './makeHtmlPage';
 
 describe('makeHtmlPage', () => {
   test('sample.md', () => {
-    const markdownFilePath = './test/sample.md';
+    const markdownFilePath = './test/markdowns/sample.md';
     const markdown = readFileSync(markdownFilePath, 'utf8');
     const pageId = 'page1';
     const html = render(markdown, {markdownFilePath, pageId}).html;

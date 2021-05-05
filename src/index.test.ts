@@ -3,8 +3,8 @@ import {markdownsToSingleHtml} from './index';
 
 describe('markdownsToSingleHtml', () => {
   test('join two markdown', () => {
-    const md1 = './test/sample.md';
-    const md2 = './test/sample2.md';
+    const md1 = './test/markdowns/sample.md';
+    const md2 = './test/markdowns/sample2.md';
     const html = markdownsToSingleHtml([md1, md2], {title: 'test'});
     const title = 'test';
     const htmlMain =

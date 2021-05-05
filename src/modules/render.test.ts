@@ -6,7 +6,7 @@ const base64_cow_png =
 
 describe('render', () => {
   test('image src is replaced to base64', () => {
-    const md = '![img](./cow.png)';
+    const md = '![img](./test/cow.png)';
     const {html} = render(md);
 
     expect(html).toBe(
@@ -15,7 +15,7 @@ describe('render', () => {
   });
 
   test('画像を含むマークダウン', () => {
-    const markdownFilePath = './test/img.md';
+    const markdownFilePath = './test/markdowns/img.md';
     const markdown = readFileSync(markdownFilePath, 'utf8');
     const html = render(markdown, {markdownFilePath}).html;
     expect(html).toBe(
@@ -24,7 +24,7 @@ describe('render', () => {
   });
 
   test('日本語h1, h2, ... から生成されるIDがURLエンコードされる', () => {
-    const markdownFilePath = './test/headers.md';
+    const markdownFilePath = './test/markdowns/headers.md';
     const markdown = readFileSync(markdownFilePath, 'utf8');
     const pageId = 'page' + 1;
     const html = render(markdown, {markdownFilePath, pageId}).html;
