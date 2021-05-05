@@ -8,9 +8,18 @@ describe('markdownsToSingleHtml', () => {
     const html = markdownsToSingleHtml([md1, md2], {title: 'test'});
     const title = 'test';
     const htmlMain =
-      '<main class="page-owner"><section class="page show" id="page1"><h1 id="page1.hello">hello</h1>\n</section><section class="page" id="page2"><h1 id="page2.neko">neko</h1>\n</section></main>';
-    const htmlHeader =
-      '<header class="index"><div><ul><li><a href="#page1">page1</a></li><li><a href="#page1.hello">hello</a></li></ul></div><div><ul><li><a href="#page2">page2</a></li><li><a href="#page2.neko">neko</a></li></ul></div></header>';
+      '<main><div class="page-owner"><section class="page show" id="page1"><h1 id="page1.hello">hello</h1>\n</section><section class="page" id="page2"><h1 id="page2.neko">neko</h1>\n</section></div></main>';
+    const htmlHeader = `<header class="index">
+<form class="search-field">
+  <input id="search-text" type="text"/>
+  <div class="search-buttons">
+    <button id="search-button">検索</button>
+    <button id="search-reset-button">リセット</button>
+  </div>
+</form>
+<hr />
+<div><ul><li><a href="#page1">page1</a></li><li><a href="#page1.hello">hello</a></li></ul></div><div><ul><li><a href="#page2">page2</a></li><li><a href="#page2.neko">neko</a></li></ul></div>
+</header>`;
     const script = (() => {
       return (
         '<script>' +

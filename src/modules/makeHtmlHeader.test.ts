@@ -21,7 +21,17 @@ describe('makeHtmlHeader', () => {
     );
     const htmlHeader = makeHtmlHeader(htmlHeaderItems);
     expect(htmlHeader).toBe(
-      '<header class="index"><div><ul><li><a href="#page1">page1</a></li><li><a href="#page1.hello">hello</a></li></ul></div><div><ul><li><a href="#page2">page2</a></li><li><a href="#page2.neko">neko</a></li></ul></div></header>'
+      `<header class="index">
+<form class="search-field">
+  <input id="search-text" type="text"/>
+  <div class="search-buttons">
+    <button id="search-button">検索</button>
+    <button id="search-reset-button">リセット</button>
+  </div>
+</form>
+<hr />
+<div><ul><li><a href="#page1">page1</a></li><li><a href="#page1.hello">hello</a></li></ul></div><div><ul><li><a href="#page2">page2</a></li><li><a href="#page2.neko">neko</a></li></ul></div>
+</header>`
     );
   });
 
@@ -29,7 +39,17 @@ describe('makeHtmlHeader', () => {
     const htmlHeaderItems = ['<div>lorem</div>', '<div>ipusm</div>'];
     const htmlHeader = makeHtmlHeader(htmlHeaderItems);
     expect(htmlHeader).toBe(
-      '<header class="index"><div>lorem</div><div>ipusm</div></header>'
+      `<header class="index">
+<form class="search-field">
+  <input id="search-text" type="text"/>
+  <div class="search-buttons">
+    <button id="search-button">検索</button>
+    <button id="search-reset-button">リセット</button>
+  </div>
+</form>
+<hr />
+<div>lorem</div><div>ipusm</div>
+</header>`
     );
   });
 });

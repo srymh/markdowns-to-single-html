@@ -35,9 +35,9 @@ var Searcher = (function () {
         var item = xPathResult.snapshotItem(length);
 
         if (
-          this.tagsToBeExcluded.findIndex(
-            (tag) => tag === item.nodeName.toLowerCase()
-          ) >= 0
+          this.tagsToBeExcluded.findIndex(function (tag) {
+            return tag === item.nodeName.toLowerCase();
+          }) >= 0
         ) {
           // Exclude this Node
         } else {
@@ -70,11 +70,12 @@ var Searcher = (function () {
         }
 
         element.style.border = '5px solid red';
-        var regexEscaped = text; // ToDo: . や * などの正規表現の特殊文字をエスケープしなければならない。
         var htmlEscaped = this._escapeHtml(text);
-        element.innerHTML = element.innerHTML.replace(
-          new RegExp(regexEscaped, 'g'),
-          `<span style="background-color: yellow; color: black;">${htmlEscaped}</span>`
+        element.innerHTML = element.innerHTML.replaceAll(
+          htmlEscaped,
+          '<span style="background-color: yellow; color: black;">' +
+            htmlEscaped +
+            '</span>'
         );
       }
     }
@@ -113,9 +114,9 @@ var Searcher = (function () {
   Searcher.prototype._makeXPathExprSearchDeepestNodeContaining = function (
     text
   ) {
-    var target = '*';
+    // main 以下のすべてを対象に検索する。
+    var target = '//main//*';
     return (
-      '//' +
       target +
       '[contains(normalize-space(), ' +
       this._escapeXPathExpr(text) +

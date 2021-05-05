@@ -19,7 +19,7 @@ h3 {
 }
 
 /* 記事 */
-main {
+.page-owner {
   margin-left: 200px;
   margin-bottom: 90vh;
 }
@@ -30,7 +30,7 @@ main {
 }
 
 .page-owner > .page.show {
-  display: initial;
+  display: block;
 }
 
 /* 目次 */
@@ -58,4 +58,28 @@ header.index li {
 header.index a {
   color: white;
   text-decoration: none;
+}
+
+header > hr {
+  border-top: 1px dashed #8c8b8b;
+  border-bottom: 1px dashed #fff;
+}
+
+/* 検索 */
+header > .search-field {
+  display: flex;
+  flex-direction: column;
+}
+
+header > .search-field > .search-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+header > .search-field > .search-buttons > #search-button {
+  width: 60%;
+}
+
+header > .search-field > .search-buttons > #search-reset-button {
+  width: 40%;
 }

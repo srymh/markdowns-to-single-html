@@ -21,7 +21,7 @@ describe('makeHtmlMain', () => {
     );
     const htmlMain = makeHtmlMain(htmlPages);
     expect(htmlMain).toBe(
-      '<main class="page-owner"><section class="page show" id="page1"><h1 id="page1.hello">hello</h1>\n</section><section class="page" id="page2"><h1 id="page2.neko">neko</h1>\n</section></main>'
+      '<main><div class="page-owner"><section class="page show" id="page1"><h1 id="page1.hello">hello</h1>\n</section><section class="page" id="page2"><h1 id="page2.neko">neko</h1>\n</section></div></main>'
     );
   });
 
@@ -29,7 +29,7 @@ describe('makeHtmlMain', () => {
     const htmlPages = ['<div>simple</div>', '<div>lorem</div>'];
     const htmlMain = makeHtmlMain(htmlPages);
     expect(htmlMain).toBe(
-      '<main class="page-owner"><div>simple</div><div>lorem</div></main>'
+      '<main><div class="page-owner"><div>simple</div><div>lorem</div></div></main>'
     );
   });
 });

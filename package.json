@@ -1,7 +1,7 @@
 {
   "name": "markdowns-to-single-html",
   "description": "",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "srymh",
   "files": [
     "/dist-cjs",
@@ -19,7 +19,8 @@
     "build:esm": "tsc --project . --module es2015 --outDir ./dist-esm",
     "prebuild": "rimraf ./dist-*",
     "prepare": "npm run build",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:template": "ts-node ./setup-test-template.ts"
   },
   "types": "dist-cjs/index.d.ts",
   "devDependencies": {
@@ -32,6 +33,7 @@
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.4",
+    "ts-node": "^9.1.1",
     "typescript": "^4.0.5"
   },
   "dependencies": {

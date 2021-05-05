@@ -1,2 +1,2 @@
 export const makeHtmlMain = (htmls: string[]) =>
-  `<main class="page-owner">${htmls.join('')}</main>`;
+  `<main><div class="page-owner">${htmls.join('')}</div></main>`;

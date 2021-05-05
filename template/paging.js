@@ -1,17 +1,21 @@
 function paging() {
-  const currentPage = document.querySelector('.page.show');
-  if (currentPage) {
-    currentPage.classList.remove('show');
-  }
-  const hash = window.location.hash;
+  var href = window.location.href;
+  var hash = window.location.hash;
   if (hash) {
-    const [h] = hash.split('.');
-    const nextPage = document.querySelector(h);
-    if (nextPage) {
-      nextPage.classList.add('show');
-      document.title = h.replace('#', '');
+    var currentPage = document.querySelector('.page.show');
+    var h = hash.split('.')[0];
+    if (currentPage && currentPage.getAttribute('id') === h.replace('#', '')) {
+      // noop
     } else {
-      alert('ページがありません。');
+      currentPage.classList.remove('show');
+      var nextPage = document.querySelector(h);
+      if (nextPage) {
+        nextPage.classList.add('show');
+        document.title = h.replace('#', '');
+        window.location.href = href;
+      } else {
+        alert('ページがありません。');
+      }
     }
   } else {
     window.location.reload();
