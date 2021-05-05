@@ -13,7 +13,6 @@ describe('Paging', () => {
     await page1link.click();
     let currentPage = await Page.currentPage;
     expect(currentPage).toBeTruthy();
-    console.log(currentPage);
     expect(await currentPage.getAttribute('id')).toBe('page1');
 
     await page2link.click();
