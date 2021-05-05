@@ -16,3 +16,7 @@ exercitationem pariatur ipsam consequuntur maiores, aliquid in assumenda.
 
 - [Pug](https://pugjs.org/)
 - [EJS](https://ejs.co/)
+
+## HTML
+
+<div style="background-color: red; width: 50px; height: 50px;"></div>

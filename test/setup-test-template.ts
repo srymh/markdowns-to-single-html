@@ -12,6 +12,7 @@ fs.writeFileSync(
   htmlFilePath,
   markdownsToSingleHtml(markdownFilePaths, {
     title: 'hello',
+    allowHtml: true,
   }),
   'utf8'
 );

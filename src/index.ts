@@ -12,6 +12,7 @@ export type MarkdownsToSingleHtmlOptions = {
   javascriptFileNames?: string[];
   cssTemplateFolderPath?: string;
   cssFileNames?: string[];
+  allowHtml?: boolean;
 };
 
 const defaultOptions = {
@@ -26,6 +27,7 @@ const defaultOptions = {
     path.join('..', 'template')
   ),
   cssFileNames: ['style.css'],
+  allowHtml: false,
 };
 
 /**
@@ -52,6 +54,8 @@ export const markdownsToSingleHtml = (
     options && options.cssFileNames
       ? [...options.cssFileNames]
       : [...defaultOptions.cssFileNames];
+  const allowHtml =
+    options && options.allowHtml ? options.allowHtml : defaultOptions.allowHtml;
 
   const {htmlMain, htmlHeader} = ((markdownFiles) => {
     const htmlPages: string[] = [];
@@ -64,6 +68,7 @@ export const markdownsToSingleHtml = (
       const {html, anchors} = render(text, {
         markdownFilePath: markdownFiles[i],
         pageId: pageId,
+        allowHtml,
       });
       htmlPages.push(makeHtmlPage(html, pageId, top));
       htmlHeaderItems.push(makeHtmlHeaderItem(anchors, pageId));

@@ -1,5 +1,6 @@
 (function (paging, Searcher) {
   window.addEventListener('hashchange', paging);
+  window.addEventListener('DOMContentLoaded', paging);
 
   var searchText = document.querySelector('#search-text');
   var searchButton = document.querySelector('#search-button');

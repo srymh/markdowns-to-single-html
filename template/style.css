@@ -33,6 +33,10 @@ h3 {
   display: block;
 }
 
+.page-owner > .page > * {
+  max-width: 100%;
+}
+
 /* 目次 */
 header.index {
   position: fixed;
@@ -103,6 +107,6 @@ header > .search-field > .search-buttons > #search-reset-button {
 .search-hit-text {
   color: black;
   background-color: white;
-  animation: bg-color 1s infinite;
   -webkit-animation: bg-color 1s infinite;
+  animation: bg-color 1s infinite;
 }

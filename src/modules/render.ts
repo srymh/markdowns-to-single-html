@@ -5,18 +5,20 @@ import {replaceAssetsToBase64} from './replaceAssetsToBase64';
 export type RenderOptions = {
   markdownFilePath?: string;
   pageId?: string;
+  allowHtml?: boolean;
 };
 
 export const render = (markdown: string, options?: RenderOptions) => {
   const defaultOptions: RenderOptions = {
     markdownFilePath: undefined,
     pageId: undefined,
+    allowHtml: false,
   };
   const opts = {...defaultOptions, ...options};
-  const {markdownFilePath, pageId} = opts;
+  const {markdownFilePath, pageId, allowHtml} = opts;
 
   const anchors: AnchorInfo[] = [];
-  const md = new MarkdownIt();
+  const md = new MarkdownIt({html: allowHtml});
   md.use(mdAnchor, {
     slugify: (str) => {
       return (

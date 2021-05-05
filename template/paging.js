@@ -18,6 +18,6 @@ function paging() {
       }
     }
   } else {
-    window.location.reload();
+    // noop
   }
 }
