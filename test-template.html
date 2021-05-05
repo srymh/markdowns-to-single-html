@@ -142,20 +142,16 @@ public class Hello {
         this.result.push({
           element: element,
           bufferedHTML: element.innerHTML,
-          borderStyle: element.style.border,
         });
 
         if (callback && typeof callback === 'function') {
           callback(element);
         }
 
-        element.style.border = '5px solid red';
         var htmlEscaped = this._escapeHtml(text);
         element.innerHTML = element.innerHTML.replaceAll(
           htmlEscaped,
-          '<span style="background-color: yellow; color: black;">' +
-            htmlEscaped +
-            '</span>'
+          '<span class="search-hit-text">' + htmlEscaped + '</span>'
         );
       }
     }
@@ -165,7 +161,6 @@ public class Hello {
     while (this.result.length) {
       var item = this.result.pop();
       item.element.innerHTML = item.bufferedHTML;
-      item.element.style.border = item.borderStyle;
     }
   };
 
@@ -374,6 +369,29 @@ header > .search-field > .search-buttons > #search-button {
 
 header > .search-field > .search-buttons > #search-reset-button {
   width: 40%;
+}
+
+@-webkit-keyframes bg-color {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: yellow;
+  }
+}
+@keyframes bg-color {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: yellow;
+  }
+}
+.search-hit-text {
+  color: black;
+  background-color: white;
+  animation: bg-color 1s infinite;
+  -webkit-animation: bg-color 1s infinite;
 }
 </style></body>
 </html>

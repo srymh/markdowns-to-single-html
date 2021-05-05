@@ -62,20 +62,16 @@ var Searcher = (function () {
         this.result.push({
           element: element,
           bufferedHTML: element.innerHTML,
-          borderStyle: element.style.border,
         });
 
         if (callback && typeof callback === 'function') {
           callback(element);
         }
 
-        element.style.border = '5px solid red';
         var htmlEscaped = this._escapeHtml(text);
         element.innerHTML = element.innerHTML.replaceAll(
           htmlEscaped,
-          '<span style="background-color: yellow; color: black;">' +
-            htmlEscaped +
-            '</span>'
+          '<span class="search-hit-text">' + htmlEscaped + '</span>'
         );
       }
     }
@@ -85,7 +81,6 @@ var Searcher = (function () {
     while (this.result.length) {
       var item = this.result.pop();
       item.element.innerHTML = item.bufferedHTML;
-      item.element.style.border = item.borderStyle;
     }
   };
 

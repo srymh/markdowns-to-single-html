@@ -83,3 +83,26 @@ header > .search-field > .search-buttons > #search-button {
 header > .search-field > .search-buttons > #search-reset-button {
   width: 40%;
 }
+
+@-webkit-keyframes bg-color {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: yellow;
+  }
+}
+@keyframes bg-color {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: yellow;
+  }
+}
+.search-hit-text {
+  color: black;
+  background-color: white;
+  animation: bg-color 1s infinite;
+  -webkit-animation: bg-color 1s infinite;
+}
