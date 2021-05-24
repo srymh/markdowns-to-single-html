@@ -20,3 +20,8 @@ exercitationem pariatur ipsam consequuntur maiores, aliquid in assumenda.
 ## HTML
 
 <div style="background-color: red; width: 50px; height: 50px;"></div>
+
+## Link
+
+- [test-template](./test-template.md)
+- [test-template2](./test-template2.md)
