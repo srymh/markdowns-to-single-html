@@ -13,6 +13,7 @@
   - [x] ページ切り替えに対応させる。
   - [ ] 印刷時にページ分けされたページを一括で印刷できる。
   - [ ] 表を画像化するかどうか選択できるようにする。
+  - [x] ページ内リンクに対応する。
 - [x] 入力するMarkdownに関して
   - [x] 拡張表記を必要としないこと。必須事項。
   - [x] 複数のMarkdownを結合し、1つのHTMLを出力できる。ページ切り替えに対応する。
@@ -25,7 +26,7 @@ npm install https://github.com/srymh/markdowns-to-single-html
 
 ``` ts
 import fs from 'fs';
-import {markdownsToSingleHtml} from 'markdownsToSingleHtml';
+import {markdownsToSingleHtml} from 'markdowns-to-single-html';
 
 const htmlFilePath = './sample.html';
 const markdownFilePaths = [
@@ -43,3 +44,20 @@ fs.writeFileSync(
   'utf8'
 );
 ```
+
+## 機能詳細
+
+### ページ内リンクに対応する
+
+2つのmarkdownファイル(`index.md`, `sub.md`)があり、 `index.md` には次のように `sub.md` へのリンクがあるとする。
+
+`index.md`
+
+``` markdown
+# Top page
+
+pages:  
+[sub page](./sub.md)
+```
+
+複数のmarkdownファイルをまとめて1つのhtmlファイルにする。そのため、 `[sub page](./sub.md)` を `<a href="sub.md">sub page</a>` または `<a href="sub.html">sub page</a>` のように変換するだけではリンクができない。そこで、 `<a href="#sub-page">sub page</a>` のように href の値を変換することでページ内リンクに対応する。

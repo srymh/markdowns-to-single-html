@@ -5,6 +5,10 @@ import {makeHtmlHeaderItem} from './modules/makeHtmlHeaderItem';
 import {makeHtmlHeader} from './modules/makeHtmlHeader';
 import {readFileSync} from 'fs';
 import path from 'path';
+import {
+  replaceLink,
+  MarkdownFilePathAndPageIdPair,
+} from './modules/replaceLink';
 
 export type MarkdownsToSingleHtmlOptions = {
   title?: string;
@@ -60,22 +64,30 @@ export const markdownsToSingleHtml = (
   const {htmlMain, htmlHeader} = ((markdownFiles) => {
     const htmlPages: string[] = [];
     const htmlHeaderItems: string[] = [];
+    const markdownFilePathAndPageIdPairs: MarkdownFilePathAndPageIdPair[] = [];
 
     for (let i = 0; i < markdownFiles.length; i++) {
-      const text = readFileSync(markdownFiles[i], 'utf8');
+      const markdownText = readFileSync(markdownFiles[i], 'utf8');
       const pageId = 'page' + (i + 1).toString();
       const top = i === 0;
-      const {html, anchors} = render(text, {
+      const {html, anchors} = render(markdownText, {
         markdownFilePath: markdownFiles[i],
         pageId: pageId,
         allowHtml,
       });
       htmlPages.push(makeHtmlPage(html, pageId, top));
       htmlHeaderItems.push(makeHtmlHeaderItem(anchors, pageId));
+      markdownFilePathAndPageIdPairs.push({
+        markdownFilePath: markdownFiles[i],
+        pageId,
+      });
     }
 
     return {
-      htmlMain: makeHtmlMain(htmlPages),
+      htmlMain: replaceLink(
+        makeHtmlMain(htmlPages),
+        markdownFilePathAndPageIdPairs
+      ),
       htmlHeader: makeHtmlHeader(htmlHeaderItems),
     };
   })(markdownFiles);

@@ -1,7 +1,7 @@
 {
   "name": "markdowns-to-single-html",
   "description": "",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "srymh",
   "files": [
     "/dist-cjs",
@@ -25,6 +25,7 @@
   "types": "dist-cjs/index.d.ts",
   "devDependencies": {
     "@types/jest": "^26.0.15",
+    "@types/jsdom": "^16.2.10",
     "@types/markdown-it": "^12.0.1",
     "@wdio/cli": "^7.5.3",
     "@wdio/jasmine-framework": "^7.5.3",
@@ -42,6 +43,7 @@
     "wdio-chromedriver-service": "^7.0.0"
   },
   "dependencies": {
+    "jsdom": "^16.5.3",
     "markdown-it": "^12.0.6",
     "markdown-it-anchor": "^7.1.0"
   }
