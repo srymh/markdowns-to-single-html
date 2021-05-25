@@ -20,7 +20,7 @@
     "prebuild": "rimraf ./dist-*",
     "prepare": "npm run build",
     "test": "jest --watch",
-    "test:template": "concurrently \"ts-node ./test/setup-test-template.ts\" \"wait-on http://localhost:5000 && wdio run wdio.conf.js\""
+    "test:template": "concurrently \"ts-node ./template-test/setup-test.ts\" \"wait-on http://localhost:5000 && wdio run ./template-test/wdio.conf.js\""
   },
   "types": "dist-cjs/index.d.ts",
   "devDependencies": {
@@ -40,7 +40,8 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.0.5",
     "wait-on": "^5.3.0",
-    "wdio-chromedriver-service": "^7.0.0"
+    "wdio-chromedriver-service": "^7.0.0",
+    "webdriverio": "^7.6.0"
   },
   "dependencies": {
     "jsdom": "^16.5.3",

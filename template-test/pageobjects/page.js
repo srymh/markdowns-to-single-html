@@ -1,3 +1,6 @@
+/// @ts-check
+/// <reference path="../../node_modules/webdriverio/async.d.ts"/>
+
 /**
  * main page object containing all methods, selectors and functionality
  * that is shared across all page objects
@@ -32,6 +35,14 @@ class Page {
 
   async resetInputSearch() {
     await (await this.inputSearchResetButton).click();
+  }
+
+  /**
+   * @param {() => any} fn
+   * @returns fn result
+   */
+  async runJavaScript(fn) {
+    return browser.execute(fn);
   }
 
   /**

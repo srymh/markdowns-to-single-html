@@ -1,4 +1,4 @@
-# Test Template 2
+# Sub
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima magni nisi
 fugit optio, nam qui vitae adipisci ullam rerum aut libero dolorum,
@@ -23,5 +23,5 @@ exercitationem pariatur ipsam consequuntur maiores, aliquid in assumenda.
 
 ## Link
 
-- [test-template](./test-template.md)
-- [test-template2](./test-template2.md)
+- [Index](./index.md)
+- [Sub](./sub.md)
