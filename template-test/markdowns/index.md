@@ -1,4 +1,4 @@
-# Test Template
+# Index
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima magni nisi
 fugit optio, nam qui vitae adipisci ullam rerum aut libero dolorum,
@@ -48,13 +48,9 @@ console.log("Hello");
 
 ## Link
 
-- [test-template](./test-template.md)
-- [test-template2](./test-template2.md)
+- [Index](./index.md)
+- [Sub](./sub.md)
 
-## Test template
-
-WebdriverIO で template をテストする。
-
-`search.e2e.js`
+## `search.e2e.js`
 
 - Searcher class _getElementsByText

@@ -6,8 +6,8 @@ describe('Search', () => {
   });
 
   it('text "Test Template"', async () => {
-    await Page.inputSearch('Test Template');
-    expect((await Page.searchHitTexts).length).toBe(2);
+    await Page.inputSearch('文字実体参照');
+    expect((await Page.searchHitTexts).length).toBe(1);
   });
 
   it('text "<"', async () => {

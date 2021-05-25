@@ -20,7 +20,7 @@
     "prebuild": "rimraf ./dist-*",
     "prepare": "npm run build",
     "test": "jest --watch",
-    "test:template": "concurrently \"ts-node ./template-test/setup-test-template.ts\" \"wait-on http://localhost:5000 && wdio run ./template-test/wdio.conf.js\""
+    "test:template": "concurrently \"ts-node ./template-test/setup-test.ts\" \"wait-on http://localhost:5000 && wdio run ./template-test/wdio.conf.js\""
   },
   "types": "dist-cjs/index.d.ts",
   "devDependencies": {
