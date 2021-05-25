@@ -12,13 +12,17 @@ var Searcher = (function () {
     ];
   }
 
-  Searcher.prototype._getElementsByText = function (text) {
+  Searcher.prototype._getElementsByText = function (text, rootTag) {
     /** @type {HTMLElement[]} */
     var elements = [];
 
     if (text.length === 0) return elements;
 
-    var expression = this._makeXPathExprSearchDeepestNodeContaining(text);
+    // main タグ以下を検索
+    var expression = this._makeXPathExprSearchDeepestNodeContaining(
+      text,
+      rootTag
+    );
 
     var xPathResult = document.evaluate(
       expression,
@@ -54,7 +58,7 @@ var Searcher = (function () {
       this.reset();
     }
 
-    var elements = this._getElementsByText(text);
+    var elements = this._getElementsByText(text, 'main');
 
     if (elements && elements.length) {
       for (var i = 0; i < elements.length; i++) {
@@ -101,16 +105,21 @@ var Searcher = (function () {
    * ipsum も検索できるように下記リンク先を参考に改善した。
    * https://stackoverflow.com/questions/53906387/select-all-deepest-nodes-with-xpath-1-0-containing-text-ignoring-markup
    *
-   * 完全一致: '//*[normalize-spaace()="ipsum" and not(./*[normalize-space()="ipsum"])]'
+   * 完全一致: '//*[normalize-space()="ipsum" and not(./*[normalize-space()="ipsum"])]'
    * 部分一致: '//*[contains(normalize-space(), "ipsum") and not(./*[contains(normalize-space(), "ipsum")])]'
    *
-   * @param {string} text
+   * @param {string} text 検索文字列
+   * @param {string|undefined} rootTag rootTagで指定したタグ以下から検索する。未指定の場合には最上位タグ以下から検索する。
    */
   Searcher.prototype._makeXPathExprSearchDeepestNodeContaining = function (
-    text
+    text,
+    rootTag
   ) {
-    // main 以下のすべてを対象に検索する。
-    var target = '//main//*';
+    var target = '//*';
+    if (rootTag !== undefined) {
+      target = '//' + rootTag + target;
+    }
+
     return (
       target +
       '[contains(normalize-space(), ' +

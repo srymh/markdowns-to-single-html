@@ -44,6 +44,12 @@ public class Hello {
 <li><a href="#page1">test-template</a></li>
 <li><a href="#page2">test-template2</a></li>
 </ul>
+<h2 id="page1.test-template-1">Test template</h2>
+<p>WebdriverIO で template をテストする。</p>
+<p><code>search.e2e.js</code></p>
+<ul>
+<li>Searcher class _getElementsByText</li>
+</ul>
 </section><section class="page" id="page2"><h1 id="page2.test-template-2">Test Template 2</h1>
 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima magni nisi
 fugit optio, nam qui vitae adipisci ullam rerum aut libero dolorum,
@@ -75,7 +81,7 @@ exercitationem pariatur ipsam consequuntur maiores, aliquid in assumenda.</p>
   </div>
 </form>
 <hr />
-<div><ul><li><a href="#page1">page1</a></li><li><a href="#page1.test-template">Test Template</a></li><li><a href="#page1.1.-read">1. Read</a></li><li><a href="#page1.2.-hello%E3%82%92%E5%87%BA%E5%8A%9B%E3%81%99%E3%82%8B">2. Helloを出力する</a></li><li><a href="#page1.2-1.-c%E8%A8%80%E8%AA%9E">2-1. C言語</a></li><li><a href="#page1.2-2.-c%23">2-2. C#</a></li><li><a href="#page1.2-2.-javascript">2-2. JavaScript</a></li><li><a href="#page1.3.">3.</a></li><li><a href="#page1.link">Link</a></li></ul></div><div><ul><li><a href="#page2">page2</a></li><li><a href="#page2.test-template-2">Test Template 2</a></li><li><a href="#page2.%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3">テンプレートエンジン</a></li><li><a href="#page2.html">HTML</a></li><li><a href="#page2.link">Link</a></li></ul></div>
+<div><ul><li><a href="#page1">page1</a></li><li><a href="#page1.test-template">Test Template</a></li><li><a href="#page1.1.-read">1. Read</a></li><li><a href="#page1.2.-hello%E3%82%92%E5%87%BA%E5%8A%9B%E3%81%99%E3%82%8B">2. Helloを出力する</a></li><li><a href="#page1.2-1.-c%E8%A8%80%E8%AA%9E">2-1. C言語</a></li><li><a href="#page1.2-2.-c%23">2-2. C#</a></li><li><a href="#page1.2-2.-javascript">2-2. JavaScript</a></li><li><a href="#page1.3.">3.</a></li><li><a href="#page1.link">Link</a></li><li><a href="#page1.test-template-1">Test template</a></li></ul></div><div><ul><li><a href="#page2">page2</a></li><li><a href="#page2.test-template-2">Test Template 2</a></li><li><a href="#page2.%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3">テンプレートエンジン</a></li><li><a href="#page2.html">HTML</a></li><li><a href="#page2.link">Link</a></li></ul></div>
 </header><script>function paging() {
   var href = window.location.href;
   var hash = window.location.hash;
@@ -113,13 +119,17 @@ exercitationem pariatur ipsam consequuntur maiores, aliquid in assumenda.</p>
     ];
   }
 
-  Searcher.prototype._getElementsByText = function (text) {
+  Searcher.prototype._getElementsByText = function (text, rootTag) {
     /** @type {HTMLElement[]} */
     var elements = [];
 
     if (text.length === 0) return elements;
 
-    var expression = this._makeXPathExprSearchDeepestNodeContaining(text);
+    // main タグ以下を検索
+    var expression = this._makeXPathExprSearchDeepestNodeContaining(
+      text,
+      rootTag
+    );
 
     var xPathResult = document.evaluate(
       expression,
@@ -155,7 +165,7 @@ exercitationem pariatur ipsam consequuntur maiores, aliquid in assumenda.</p>
       this.reset();
     }
 
-    var elements = this._getElementsByText(text);
+    var elements = this._getElementsByText(text, 'main');
 
     if (elements && elements.length) {
       for (var i = 0; i < elements.length; i++) {
@@ -202,16 +212,21 @@ exercitationem pariatur ipsam consequuntur maiores, aliquid in assumenda.</p>
    * ipsum も検索できるように下記リンク先を参考に改善した。
    * https://stackoverflow.com/questions/53906387/select-all-deepest-nodes-with-xpath-1-0-containing-text-ignoring-markup
    *
-   * 完全一致: '//*[normalize-spaace()="ipsum" and not(./*[normalize-space()="ipsum"])]'
+   * 完全一致: '//*[normalize-space()="ipsum" and not(./*[normalize-space()="ipsum"])]'
    * 部分一致: '//*[contains(normalize-space(), "ipsum") and not(./*[contains(normalize-space(), "ipsum")])]'
    *
-   * @param {string} text
+   * @param {string} text 検索文字列
+   * @param {string|undefined} rootTag rootTagで指定したタグ以下から検索する。未指定の場合には最上位タグ以下から検索する。
    */
   Searcher.prototype._makeXPathExprSearchDeepestNodeContaining = function (
-    text
+    text,
+    rootTag
   ) {
-    // main 以下のすべてを対象に検索する。
-    var target = '//main//*';
+    var target = '//*';
+    if (rootTag !== undefined) {
+      target = '//' + rootTag + target;
+    }
+
     return (
       target +
       '[contains(normalize-space(), ' +

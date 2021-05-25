@@ -50,3 +50,11 @@ console.log("Hello");
 
 - [test-template](./test-template.md)
 - [test-template2](./test-template2.md)
+
+## Test template
+
+WebdriverIO で template をテストする。
+
+`search.e2e.js`
+
+- Searcher class _getElementsByText

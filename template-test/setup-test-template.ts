@@ -2,10 +2,10 @@ import fs from 'fs';
 import http from 'http';
 import {markdownsToSingleHtml} from '../src/index';
 
-const htmlFilePath = './test/test-template.html';
+const htmlFilePath = './template-test/test-template.html';
 const markdownFilePaths = [
-  './test/markdowns/test-template.md',
-  './test/markdowns/test-template2.md',
+  './template-test/markdowns/test-template.md',
+  './template-test/markdowns/test-template2.md',
 ];
 
 fs.writeFileSync(
