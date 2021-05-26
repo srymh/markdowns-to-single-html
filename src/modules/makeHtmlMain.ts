@@ -1,2 +1,5 @@
-export const makeHtmlMain = (htmls: string[]) =>
-  `<main><div class="page-owner">${htmls.join('')}</div></main>`;
+import ejs from 'ejs';
+
+export const makeHtmlMain = (template: string, sections: string[]) => {
+  return ejs.render(template, {sections});
+};

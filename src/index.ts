@@ -5,6 +5,7 @@ import {makeHtmlHeaderItem} from './modules/makeHtmlHeaderItem';
 import {makeHtmlHeader} from './modules/makeHtmlHeader';
 import {readFileSync} from 'fs';
 import path from 'path';
+import ejs from 'ejs';
 import {
   replaceLink,
   MarkdownFilePathAndPageIdPair,
@@ -61,7 +62,29 @@ export const markdownsToSingleHtml = (
   const allowHtml =
     options && options.allowHtml ? options.allowHtml : defaultOptions.allowHtml;
 
+  const htmlTemplateFolderPath = path.resolve(
+    path.dirname(__filename),
+    path.join('..', 'template', 'html')
+  );
+
+  const htmlTemplateHeaderPath = path.join(
+    htmlTemplateFolderPath,
+    'header.ejs'
+  );
+  const htmlTemplateHeaderItemPath = path.join(
+    htmlTemplateFolderPath,
+    'headerItem.ejs'
+  );
+  const htmlTemplatePagePath = path.join(htmlTemplateFolderPath, 'page.ejs');
+  const htmlTemplateMainPath = path.join(htmlTemplateFolderPath, 'main.ejs');
+
   const {htmlMain, htmlHeader} = ((markdownFiles) => {
+    const htmlTemplate = {
+      header: readFileSync(htmlTemplateHeaderPath, 'utf8'),
+      headerItem: readFileSync(htmlTemplateHeaderItemPath, 'utf8'),
+      page: readFileSync(htmlTemplatePagePath, 'utf8'),
+      main: readFileSync(htmlTemplateMainPath, 'utf8'),
+    };
     const htmlPages: string[] = [];
     const htmlHeaderItems: string[] = [];
     const markdownFilePathAndPageIdPairs: MarkdownFilePathAndPageIdPair[] = [];
@@ -75,8 +98,10 @@ export const markdownsToSingleHtml = (
         pageId: pageId,
         allowHtml,
       });
-      htmlPages.push(makeHtmlPage(html, pageId, top));
-      htmlHeaderItems.push(makeHtmlHeaderItem(anchors, pageId));
+      htmlPages.push(makeHtmlPage(htmlTemplate.page, html, pageId, top));
+      htmlHeaderItems.push(
+        makeHtmlHeaderItem(htmlTemplate.headerItem, anchors, pageId)
+      );
       markdownFilePathAndPageIdPairs.push({
         markdownFilePath: markdownFiles[i],
         pageId,
@@ -85,10 +110,10 @@ export const markdownsToSingleHtml = (
 
     return {
       htmlMain: replaceLink(
-        makeHtmlMain(htmlPages),
+        makeHtmlMain(htmlTemplate.main, htmlPages),
         markdownFilePathAndPageIdPairs
       ),
-      htmlHeader: makeHtmlHeader(htmlHeaderItems),
+      htmlHeader: makeHtmlHeader(htmlTemplate.header, htmlHeaderItems),
     };
   })(markdownFiles);
 
@@ -114,15 +139,13 @@ export const markdownsToSingleHtml = (
     return style;
   })(cssTemplateFolderPath, cssFileNames);
 
-  return `<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${title}</title>
-  </head>
-  <body>${htmlMain}${htmlHeader}${script}${style}</body>
-</html>
-`;
+  const htmlTemplateIndexPath = path.join(htmlTemplateFolderPath, 'index.ejs');
+  const htmlTemplateIndex = readFileSync(htmlTemplateIndexPath, 'utf8');
+  return ejs.render(htmlTemplateIndex, {
+    title,
+    htmlMain,
+    htmlHeader,
+    script,
+    style,
+  });
 };

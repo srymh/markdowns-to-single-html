@@ -12,6 +12,10 @@ describe('makeHtmlHeader', () => {
     const markdowns = markdownFilePaths.map((filePath) =>
       readFileSync(filePath, 'utf8')
     );
+    const template = {
+      headerItem: readFileSync('./template/html/headerItem.ejs', 'utf8'),
+      header: readFileSync('./template/html/header.ejs', 'utf8'),
+    };
     const anchorsList = markdowns.map(
       (markdown, i) =>
         render(markdown, {
@@ -20,9 +24,9 @@ describe('makeHtmlHeader', () => {
         }).anchors
     );
     const htmlHeaderItems = anchorsList.map((anchors, i) =>
-      makeHtmlHeaderItem(anchors, 'page' + (i + 1))
+      makeHtmlHeaderItem(template.headerItem, anchors, 'page' + (i + 1))
     );
-    const htmlHeader = makeHtmlHeader(htmlHeaderItems);
+    const htmlHeader = makeHtmlHeader(template.header, htmlHeaderItems);
     expect(htmlHeader).toBe(
       `<header class="index">
 <form class="search-field">
@@ -39,8 +43,11 @@ describe('makeHtmlHeader', () => {
   });
 
   test('simple', () => {
+    const template = {
+      header: readFileSync('./template/html/header.ejs', 'utf8'),
+    };
     const htmlHeaderItems = ['<div>lorem</div>', '<div>ipusm</div>'];
-    const htmlHeader = makeHtmlHeader(htmlHeaderItems);
+    const htmlHeader = makeHtmlHeader(template.header, htmlHeaderItems);
     expect(htmlHeader).toBe(
       `<header class="index">
 <form class="search-field">
