@@ -1,21 +1,18 @@
 import MarkdownIt from 'markdown-it';
 import mdAnchor, {AnchorInfo} from 'markdown-it-anchor';
-import {replaceAssetsToBase64} from './replaceAssetsToBase64';
 
 export type RenderOptions = {
-  markdownFilePath?: string;
   pageId?: string;
   allowHtml?: boolean;
 };
 
 export const render = (markdown: string, options?: RenderOptions) => {
   const defaultOptions: RenderOptions = {
-    markdownFilePath: undefined,
     pageId: undefined,
     allowHtml: false,
   };
 
-  const {markdownFilePath, pageId, allowHtml} = {...defaultOptions, ...options};
+  const {pageId, allowHtml} = {...defaultOptions, ...options};
 
   const anchors: AnchorInfo[] = [];
 
@@ -34,18 +31,6 @@ export const render = (markdown: string, options?: RenderOptions) => {
     callback: (_token, anchor_info) => {
       anchors.push(anchor_info);
     },
-  }).use(replaceAssetsToBase64, {
-    markdownFilePath,
-    mimeTypes: [
-      {
-        ext: '.png',
-        mime: 'image/png',
-      },
-      {
-        ext: '.svg',
-        mime: 'image/svg+xml',
-      },
-    ],
   });
 
   return {

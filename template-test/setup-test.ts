@@ -6,20 +6,20 @@ const markdownFilePaths = [
   './template-test/markdowns/sub.md',
 ];
 
-const html = markdownsToSingleHtml(markdownFilePaths, {
+markdownsToSingleHtml(markdownFilePaths, {
   title: 'hello',
   allowHtml: true,
+}).then((html) => {
+  require('fs').writeFile('./' + Date.now() + '.html', html, () => {});
+
+  try {
+    http
+      .createServer((_req, res) => {
+        res.writeHead(200, {'Content-type': 'text/html'});
+        res.end(html);
+      })
+      .listen(5000);
+  } catch (error) {
+    console.error(error);
+  }
 });
-
-// require('fs').writeFile('./' + Date.now() + '.html', html, () => {});
-
-try {
-  http
-    .createServer((_req, res) => {
-      res.writeHead(200, {'Content-type': 'text/html'});
-      res.end(html);
-    })
-    .listen(5000);
-} catch (error) {
-  console.error(error);
-}
