@@ -4,7 +4,7 @@ import {loadScripts} from './modules/loadScripts';
 import {loadStyles} from './modules/loadStyles';
 import {renderEJSBody} from './modules/renderEJSBody';
 import {renderEJSIndex} from './modules/renderEJSIndex';
-import {renderMarkdowns} from './modules/renderMarkdown';
+import {renderMarkdowns} from './modules/renderMarkdowns';
 import {replaceLink} from './modules/replaceLink';
 
 export type MarkdownsToSingleHtmlOptions = {

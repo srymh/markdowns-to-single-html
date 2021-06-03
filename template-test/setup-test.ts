@@ -11,7 +11,7 @@ const html = markdownsToSingleHtml(markdownFilePaths, {
   allowHtml: true,
 });
 
-require('fs').writeFile('./' + Date.now() + '.html', html, () => {});
+// require('fs').writeFile('./' + Date.now() + '.html', html, () => {});
 
 try {
   http

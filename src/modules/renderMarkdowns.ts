@@ -4,7 +4,7 @@ import {render} from './render';
 export type Page = {
   show: string;
   pageId: string;
-  content: string;
+  htmlContent: string;
   markdownFilePath: string;
 };
 
@@ -36,7 +36,7 @@ export const renderMarkdowns = (
 
     pages.push({
       pageId,
-      content: html,
+      htmlContent: html,
       show: top ? ' show' : '',
       markdownFilePath: markdownFiles[i],
     });

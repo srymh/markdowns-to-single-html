@@ -3,7 +3,7 @@
     <div class="page-owner">
       <% pages.forEach(function(page){ _%>
       <article class="page<%- page.show _%>" id="<%- page.pageId _%>">
-        <%- page.content _%>
+        <%- page.htmlContent _%>
       </article>
       <% }); _%>
     </div>

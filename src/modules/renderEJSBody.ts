@@ -1,5 +1,5 @@
 import ejs from 'ejs';
-import {Page, HeaderItem} from './renderMarkdown';
+import {Page, HeaderItem} from './renderMarkdowns';
 
 export type RenderEJSBodyData = {
   pages: Page[];
