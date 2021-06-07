@@ -1,14 +1,11 @@
-import {render} from './modules/render';
-import {makeHtmlPage} from './modules/makeHtmlPage';
-import {makeHtmlMain} from './modules/makeHtmlMain';
-import {makeHtmlHeaderItem} from './modules/makeHtmlHeaderItem';
-import {makeHtmlHeader} from './modules/makeHtmlHeader';
 import {readFileSync} from 'fs';
 import path from 'path';
-import {
-  replaceLink,
-  MarkdownFilePathAndPageIdPair,
-} from './modules/replaceLink';
+import {loadScripts} from './modules/loadScripts';
+import {loadStyles} from './modules/loadStyles';
+import {renderEJSBody} from './modules/renderEJSBody';
+import {renderEJSIndex} from './modules/renderEJSIndex';
+import {renderMarkdowns} from './modules/renderMarkdowns';
+import {replaceLink} from './modules/replaceLink';
 
 export type MarkdownsToSingleHtmlOptions = {
   title?: string;
@@ -35,7 +32,7 @@ const defaultOptions = {
 };
 
 /**
- * @param markdownFiles Markdown文字列
+ * @param markdownFiles Markdownファイルパスの配列
  */
 export const markdownsToSingleHtml = (
   markdownFiles: string[],
@@ -61,68 +58,36 @@ export const markdownsToSingleHtml = (
   const allowHtml =
     options && options.allowHtml ? options.allowHtml : defaultOptions.allowHtml;
 
-  const {htmlMain, htmlHeader} = ((markdownFiles) => {
-    const htmlPages: string[] = [];
-    const htmlHeaderItems: string[] = [];
-    const markdownFilePathAndPageIdPairs: MarkdownFilePathAndPageIdPair[] = [];
+  const htmlTemplateFolderPath = path.resolve(
+    path.dirname(__filename),
+    path.join('..', 'template', 'html')
+  );
 
-    for (let i = 0; i < markdownFiles.length; i++) {
-      const markdownText = readFileSync(markdownFiles[i], 'utf8');
-      const pageId = 'page' + (i + 1).toString();
-      const top = i === 0;
-      const {html, anchors} = render(markdownText, {
-        markdownFilePath: markdownFiles[i],
-        pageId: pageId,
-        allowHtml,
-      });
-      htmlPages.push(makeHtmlPage(html, pageId, top));
-      htmlHeaderItems.push(makeHtmlHeaderItem(anchors, pageId));
-      markdownFilePathAndPageIdPairs.push({
-        markdownFilePath: markdownFiles[i],
-        pageId,
-      });
-    }
+  const {pages, headerItems} = renderMarkdowns(markdownFiles, allowHtml);
 
-    return {
-      htmlMain: replaceLink(
-        makeHtmlMain(htmlPages),
-        markdownFilePathAndPageIdPairs
-      ),
-      htmlHeader: makeHtmlHeader(htmlHeaderItems),
-    };
-  })(markdownFiles);
+  const htmlTemplate = {
+    index: readFileSync(path.join(htmlTemplateFolderPath, 'index.ejs'), 'utf8'),
+    body: readFileSync(path.join(htmlTemplateFolderPath, 'body.ejs'), 'utf8'),
+  };
 
-  const script = ((folder, fileNames) => {
-    let script = '';
-    for (const fileName of fileNames) {
-      script +=
-        '<script>' +
-        readFileSync(path.join(folder, fileName), 'utf8') +
-        '</script>';
-    }
-    return script;
-  })(javascriptTemplateFolderPath, javascriptFileNames);
+  const body = replaceLink(
+    renderEJSBody(htmlTemplate.body, {
+      pages,
+      headerItems,
+    }),
+    pages.map((x) => ({
+      markdownFilePath: x.markdownFilePath,
+      pageId: x.pageId,
+    }))
+  );
 
-  const style = ((folder, fileNames) => {
-    let style = '';
-    for (const fileName of fileNames) {
-      style +=
-        '<style>' +
-        readFileSync(path.join(folder, fileName), 'utf8') +
-        '</style>';
-    }
-    return style;
-  })(cssTemplateFolderPath, cssFileNames);
+  const script = loadScripts(javascriptTemplateFolderPath, javascriptFileNames);
+  const style = loadStyles(cssTemplateFolderPath, cssFileNames);
 
-  return `<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${title}</title>
-  </head>
-  <body>${htmlMain}${htmlHeader}${script}${style}</body>
-</html>
-`;
+  return renderEJSIndex(htmlTemplate.index, {
+    title,
+    body,
+    script,
+    style,
+  });
 };

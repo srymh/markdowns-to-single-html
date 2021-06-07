@@ -14,11 +14,13 @@ export const render = (markdown: string, options?: RenderOptions) => {
     pageId: undefined,
     allowHtml: false,
   };
-  const opts = {...defaultOptions, ...options};
-  const {markdownFilePath, pageId, allowHtml} = opts;
+
+  const {markdownFilePath, pageId, allowHtml} = {...defaultOptions, ...options};
 
   const anchors: AnchorInfo[] = [];
+
   const md = new MarkdownIt({html: allowHtml});
+
   md.use(mdAnchor, {
     slugify: (str) => {
       return (
@@ -45,6 +47,7 @@ export const render = (markdown: string, options?: RenderOptions) => {
       },
     ],
   });
+
   return {
     html: md.render(markdown),
     anchors: [...anchors],
