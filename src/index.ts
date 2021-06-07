@@ -34,7 +34,7 @@ const defaultOptions = {
 /**
  * @param markdownFiles Markdownファイルパスの配列
  */
-export const markdownsToSingleHtml = (
+export const markdownsToSingleHtml = async (
   markdownFiles: string[],
   options?: MarkdownsToSingleHtmlOptions
 ) => {
@@ -71,7 +71,7 @@ export const markdownsToSingleHtml = (
   };
 
   const body = replaceLink(
-    renderEJSBody(htmlTemplate.body, {
+    await renderEJSBody(htmlTemplate.body, {
       pages,
       headerItems,
     }),

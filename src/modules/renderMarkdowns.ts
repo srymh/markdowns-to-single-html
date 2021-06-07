@@ -29,7 +29,6 @@ export const renderMarkdowns = (
     const top = i === 0;
 
     const {html, anchors} = render(markdownText, {
-      markdownFilePath: markdownFiles[i],
       pageId,
       allowHtml,
     });

@@ -3,10 +3,10 @@ import {markdownsToSingleHtml} from './index';
 import {JSDOM} from 'jsdom';
 
 describe('markdownsToSingleHtml', () => {
-  test('join two markdown', () => {
+  test('join two markdown', async () => {
     const md1 = './test/markdowns/sample.md';
     const md2 = './test/markdowns/sample2.md';
-    const html = markdownsToSingleHtml([md1, md2], {title: 'test'});
+    const html = await markdownsToSingleHtml([md1, md2], {title: 'test'});
     const domA = new JSDOM(html);
 
     const script = (() => {

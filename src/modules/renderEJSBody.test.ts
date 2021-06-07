@@ -2,7 +2,7 @@ import {JSDOM} from 'jsdom';
 import {renderEJSBody, RenderEJSBodyData} from './renderEJSBody';
 
 describe('renderEJSBody.ts', () => {
-  test('simple', () => {
+  test('simple', async () => {
     const data: RenderEJSBodyData = {
       pages: [
         {
@@ -28,7 +28,7 @@ describe('renderEJSBody.ts', () => {
     <div id="headerItem-anchor-slug"><%- headerItems[0].anchors[0].slug %></div>
     <div id="headerItem-anchor-title"><%- headerItems[0].anchors[0].title %></div>
     `;
-    const html = renderEJSBody(template, data);
+    const html = await renderEJSBody(template, data);
 
     const dom = new JSDOM(html);
     expect(dom.window.document.getElementById('page-pagId')?.innerHTML).toBe(
