@@ -57,6 +57,9 @@ export const replaceAssets = async (html: string, markdownFilePath: string) => {
   for (const el of elementsHaveSrcAttr) {
     // @ts-ignore
     const src = el.src;
+
+    if (src === undefined) continue;
+
     let srcUrl: url.URL | undefined;
 
     try {
@@ -87,6 +90,8 @@ export const replaceAssets = async (html: string, markdownFilePath: string) => {
       } else {
         src_ = src;
       }
+
+      src_ = decodeURI(src_);
 
       let assetFilePath;
       if (path.isAbsolute(src_)) {
